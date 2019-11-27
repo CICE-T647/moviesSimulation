@@ -18,8 +18,17 @@ const getMovieById = (id, callback) => {
 getMovieById(8, (error, data) => {
   if (error) {
     console.log(error);
+  } else {
+    console.log(data);
   }
-  console.log(data);
+});
+
+getMovieById(25, (error, data) => {
+  if (error) {
+    console.log(error);
+  } else {
+    console.log(data);
+  }
 });
 
 // getMovieByTitle
