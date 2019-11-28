@@ -1,4 +1,4 @@
-const movies = [
+module.exports = [
   {
     id: 1,
     title : "A Wrinkle in Time",
