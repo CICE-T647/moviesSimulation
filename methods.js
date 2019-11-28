@@ -1,23 +1,26 @@
-const movies = require("./moviesData.js");
+const movies = require("./moviesData");
 // getMovieById
+console.log("getMovieById->");
 const getMovieById = (id, cb) => {
-  const movie = movies.find(movie => {
-    return movie.id == id;
-  });
-
-  if (!movie) {
-    cb("No existe la pelicula");
+  const oneMovie = movies.find(movie => movie.id == id);
+  if (!oneMovie) {
+    return cb(`No se ha encontrado ninguna película con la id ${id}`);
   } else {
-    cb(null, movie);
+    return cb(null, oneMovie);
   }
 };
-getMovieById(5, (err, data) => {
-  if (err) {
-    console.log(err);
-  } else {
-    console.log(data);
-  }
-});
+
+setTimeout(() => {
+  getMovieById(55, (err, data) => {
+    if (err) {
+      return console.log(err);
+    } else {
+      return console.log(data);
+    }
+  });
+}, 3000);
+
 // getMovieByTitle
+console.log("getMovieByTitle->");
 
 // getMovieByShowtimes
