@@ -12,20 +12,58 @@ const server = http.createServer((request, response) => {
   switch (request.url) {
 
     case `/html?${query}`:
-      const consulta = querystring.decode(query);
-      console.log(consulta.name, consulta.id, consulta.title,consulta.showTimes);
-      response.statusCode = 200;
-      const moviesByTitle = movies.getMoviesByTitle(consulta.title);
-      const moviesById = movies.getMovieById(parseInt(consulta.id))
-      const moviesByShowtime =  movies.getMovieByShowtimes(consulta.showTimes);
-      console.log(moviesByTitle,moviesById, moviesByShowtime );
-      response.write("<div style='margin: 50px; background: #00ff00; border-radius: 20px; color: #333; padding: 20px 40px; font-family: arial; '>");
-      response.write(`<h1>Ejercicio de ${consulta.name}</h1>`);
-      // response.write(`<p>La película cuyo id es ${consulta.id} es moviesById}</p>`);
-      // response.write(`<p>La película que empieza a las ${consulta.showTime} es moviesByShowtime}</p>`);
-      // response.write(`<p>La película cuyo título contiene ${consulta.title} es moviesByTitle}</p>`);
-      response.write("</div>");
-      response.end();
+      const {id, title, showTimes, name} = querystring.decode(query);
+      response.setHeader("Content-type", "text/plain");
+      if(name) //Si se ha puesto nombre
+        response.write(`<h1 style="font-family: helvetica;">Querido ${name}:</h1>`); //Encabezado con nombre
+      //Función para ID
+      const getUserById = id => {
+        movies.getMovieFromMoviesDataById(id, (error, data) => {
+          if (error) {
+            response.write(error);
+          }
+          response.write(`<div style="background: black; padding: 20px; color: white; font-weight: bold; font-family: arial; margin-bottom: 20px">La película con el id ${id} es ${JSON.stringify(data.title)}</div>`);
+        });
+      };
+      //Función para title
+      const getMoviesByTitle = title => {
+        movies.getMoviesFromMoviesDataByTitle(title)
+          .then(mov=>{
+              let moviesList=[];
+              mov.forEach(movie => moviesList.push(movie.title));
+              response.write(`<div style="background: black; padding: 20px; color: white; font-weight: bold; font-family: arial; margin-bottom: 20px">Las películas que empiezan con ${title} son: ${moviesList.toString()}</div>`);
+            }
+            
+          )
+          .catch(error => {
+            response.write(error);
+            }  
+          );
+      };
+      //Función para horarios
+      const getMovieByShowtimes = async showtimes => {
+        try {
+          const moviesMatched = await movies.getMoviesFromMoviesDataByShowtimes(showtimes);
+          let moviesList = []; 
+          moviesMatched.forEach(movie => moviesList.push(movie.title));
+          moviesList = moviesList.toString()
+          return response.write(`<div style="background: black; padding: 20px; color: white; font-weight: bold; font-family: arial; margin-bottom: 20px">Las películas que empiezan a las ${showTimes} son: ${moviesList}</div>`);
+        } catch (error) {
+          return response.write(error);
+        }
+      };
+      //Pongo condicionales por si no están los parámetros
+      if (id)
+        getUserById(parseInt(id)); 
+      if (title)
+        getMoviesByTitle(title); 
+      if (showTimes)
+        getMovieByShowtimes(showTimes); 
+
+      //Termino la respuesta con más tiempo de ejecución que las promesas, sino da error. 
+      setTimeout(() => {
+        response.end()
+      }, 3000);
       break;
 
     default:

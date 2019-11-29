@@ -14,7 +14,7 @@ const getMovieFromMoviesDataById = (id, callback) => {
 const getMovieById = id => {
   getMovieFromMoviesDataById(id, (error, movie) => {
     if (error) return console.log(error);
-    return console.log(movie);
+    return movie;
   });
 };
 
@@ -28,7 +28,6 @@ const getMoviesFromMoviesDataByTitle = title => {
       if (!moviesMatched) {
         reject(`No se ha encontrado una película que comience por ${title}`);
       }
-
       resolve(moviesMatched);
     }, 2000);
   });
@@ -37,7 +36,7 @@ const getMoviesFromMoviesDataByTitle = title => {
 // getMovieByTitle
 const getMoviesByTitle = title => {
   getMoviesFromMoviesDataByTitle(title)
-    .then(movie => movie)
+    .then(mov => mov)
     .catch(error => console.log(error));
 };
 
@@ -68,11 +67,11 @@ const getMovieByShowtimes = async showtimes => {
   }
 };
 
-getMoviesByTitle("The"); 
+// getMoviesFromMoviesDataByTitle("The").then(mo =>console.log(mo)); 
 //getMovieByShowtimes('13:00').then(val => console.log(val)); 
 // getMovieById(3);
 
-exports.getMovieById = getMovieById;
-exports.getMoviesByTitle = getMoviesByTitle;
-exports.getMovieByShowtimes = getMovieByShowtimes; 
+exports.getMovieFromMoviesDataById = getMovieFromMoviesDataById;
+exports.getMoviesFromMoviesDataByTitle = getMoviesFromMoviesDataByTitle;
+exports.getMoviesFromMoviesDataByShowtimes = getMoviesFromMoviesDataByShowtimes; 
 
