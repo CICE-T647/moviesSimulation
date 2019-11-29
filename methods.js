@@ -71,4 +71,9 @@ const getMovieByShowtimes = async shotimes => {
   }
 };
 
-getMovieByShowtimes("13:00");
+//getMovieByShowtimes("13:00");
+
+exports.getMovieById = getMovieById;
+exports.getMoviesByTitle = getMoviesByTitle;
+exports.getMovieByShowtimes = getMovieByShowtimes; 
+
