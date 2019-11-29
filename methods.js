@@ -17,7 +17,6 @@ const getMovieById = id => {
     return console.log(movie);
   });
 };
-// getMovieById(5);
 
 const getMoviesFromMoviesDataByTitle = title => {
   return new Promise((resolve, reject) => {
@@ -42,7 +41,6 @@ const getMoviesByTitle = title => {
     .catch(error => console.log(error));
 };
 
-// getMoviesByTitle("Z");
 // getMovieByShowtimes
 
 const getMoviesFromMoviesDataByShowtimes = showTime => {
@@ -71,7 +69,10 @@ const getMovieByShowtimes = async shotimes => {
   }
 };
 
-//getMovieByShowtimes("13:00");
+//getMoviesByTitle("The");
+// getMovieByShowtimes("13:00");
+// getMovieById(3);
+
 exports.getMovieById = getMovieById;
 exports.getMoviesByTitle = getMoviesByTitle;
 exports.getMovieByShowtimes = getMovieByShowtimes; 

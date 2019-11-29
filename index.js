@@ -12,12 +12,12 @@ const server = http.createServer((request, response) => {
   switch (request.url) {
 
     case `/html?${query}`:
-      const consulta = querystring.parse(query);
-      //console.log(consulta.name, consulta.id, consulta.title, consulta.showTimes);
+      const consulta = querystring.decode(query);
+      console.log(consulta.name, consulta.id, consulta.title,consulta.showTimes);
       response.statusCode = 200;
       const moviesByTitle = movies.getMoviesByTitle(consulta.title);
-      const moviesById = movies.getMovieById(JSON.stringify(consulta.id)); 
-      const moviesByShowtime =  movies.getMovieByShowtimes(consulta.showTime);
+      const moviesById = movies.getMovieById(parseInt(consulta.id)); 
+      const moviesByShowtime =  movies.getMovieByShowtimes(consulta.showTimes);
       response.write("<div style='margin: 50px; background: red; border-radius: 20px; color: fff'>");
       response.write(`<h1>Ejercicio de ${consulta.name}</h1>`);
       // response.write(`<p>La película cuyo id es ${consulta.id} es moviesById}</p>`);
