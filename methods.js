@@ -1,6 +1,7 @@
 const movies = require("./moviesData")
 
 
+
 //----------------------//
 //  1.  getMovieById    //
 //----------------------//
@@ -15,7 +16,7 @@ const getMovieFromMovieDataById = (id, callback) => {
         if (!movie) callback(`No se ha encontrado ninguna película con la id ${id}`)
         else callback(null, movie)
 
-    },3000)
+    },2000)
 }
 
 
@@ -29,13 +30,17 @@ const getMovieById = ( id ) => {
            console.log(error)
            return error
         }
-       else return data
+        console.log(data)
+        return data
    })
 
 }
 
 // Llamada de la función principal (handler):
 getMovieById( 8 )
+
+// llamada que devuelve error: 
+// getMovieById( 30 )
 
 
 
@@ -67,14 +72,20 @@ const getMoviesByTitle = (title) =>{
     // Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
     
     getMoviesFromMoviesDataByTitle(title)
-    .then(movies=> movies)
+    .then(moviesMatched=>{
+        console.log(moviesMatched)
+        return moviesMatched
+    } )
     .catch(error=>{
         console.log(error)
         return error
     })
 }
 
+// Llamada de la función principal (handler):
 getMoviesByTitle("The S")
+// Llamada que devuelve error:
+// getMoviesByTitle("X")
 
 
 
@@ -108,6 +119,8 @@ const getMoviesByShowtime = async (swhotime) => {
     try{
 
         const moviesMatched = await getMoviesFromMoviesDataByShowtime(swhotime)
+        
+        console.log(moviesMatched)
         return moviesMatched
 
     } catch(error) {
@@ -121,3 +134,5 @@ const getMoviesByShowtime = async (swhotime) => {
 
 // Llamada de la función principal (handler)
 getMoviesByShowtime("13:50")
+// Llamada que devuelve error:
+// getMoviesByShowtime("20:33")
