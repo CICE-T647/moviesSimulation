@@ -37,7 +37,7 @@ const getMoviesFromMoviesDataByTitle = title => {
 // getMovieByTitle
 const getMoviesByTitle = title => {
   getMoviesFromMoviesDataByTitle(title)
-    .then(movie => console.log(movie))
+    .then(movie => movie)
     .catch(error => console.log(error));
 };
 
@@ -59,18 +59,17 @@ const getMoviesFromMoviesDataByShowtimes = showTime => {
   });
 };
 
-const getMovieByShowtimes = async shotimes => {
+const getMovieByShowtimes = async showtimes => {
   try {
-    const moviesMatched = await getMoviesFromMoviesDataByShowtimes(shotimes);
-
-    return console.log(moviesMatched);
+    const moviesMatched = await getMoviesFromMoviesDataByShowtimes(showtimes);
+    return moviesMatched;
   } catch (error) {
     return console.log(error);
   }
 };
 
-//getMoviesByTitle("The");
-// getMovieByShowtimes("13:00");
+getMoviesByTitle("The"); 
+//getMovieByShowtimes('13:00').then(val => console.log(val)); 
 // getMovieById(3);
 
 exports.getMovieById = getMovieById;
