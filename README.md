@@ -87,9 +87,7 @@ Crea una ruta getMovieShowtimes (o "get-movie-by-showtime", a vuestro gusto), qu
 
 ```
 
-En este caso tendremos que usar await, pero recordad que await solo es valido dentro de una función así
-ncrona, por lo que tendré
-is que encontrar dónde situar el async...
+En este caso tendremos que usar async-await, pero recordad que await solo es valido dentro de una función asíncrona, por lo que tendréis que encontrar dónde situar el async...
 
 
 ### Mucho Ánimo!
