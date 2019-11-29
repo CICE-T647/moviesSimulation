@@ -64,13 +64,13 @@ Crea una ruta getMovieByTitle (o "get-movie-by-title", a vuestro gusto), que rec
 Ejemplo:
 Queremos buscar una película cuyo título empiece por "The".
 
-    ```
+```
         - La ruta debe gestionar el path /getmoviebytitle?title=the
         - La "petición" debe ejecutarse con una __promesa__.
         - Si se encuentra una coincidencia, la función deberá devolver la película o películas encontradas.
         - En caso de no encontrar ninguna coincidencia deberá devolver un error: "No se ha encontrado ninguna película que empiece por [TITLE]"
 
-    ```
+```
 
 Si las respuestas En el callback se hacían dentro del callback, en este caso tendrán que hacerse en el then y en el catch.
 ### Ejercicio 3.
@@ -79,13 +79,13 @@ Si las respuestas En el callback se hacían dentro del callback, en este caso te
 
 Crea una ruta getMovieShowtimes (o "get-movie-by-showtime", a vuestro gusto), que reciba una query `showtime` y devuelva un array con la película o películas que encuentre
 
-        ```
+```
         - La ruta debe gestionar el path /getmoviebyshotime?shotime=10:30
         - La "petición" debe ejecutarse con Async-await.
         - Si se encuentra una coincidencia, la función deberá devolver la película o películas encontradas.
         - En caso de no encontrar ninguna coincidencia deberá devolver un error: "No se ha encontrado ninguna película que comience a las [TIME]"
 
-        ```
+```
 
 En este caso tendremos que usar await, pero recordad que await solo es valido dentro de una función así
 ncrona, por lo que tendré
