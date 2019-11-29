@@ -67,12 +67,11 @@ const getMovieByShowtimes = async shotimes => {
 
     return console.log(moviesMatched);
   } catch (error) {
-    return console.log(movie);
+    return console.log(error);
   }
 };
 
 //getMovieByShowtimes("13:00");
-
 exports.getMovieById = getMovieById;
 exports.getMoviesByTitle = getMoviesByTitle;
 exports.getMovieByShowtimes = getMovieByShowtimes; 

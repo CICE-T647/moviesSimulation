@@ -7,11 +7,7 @@ const movies = require("./methods");
 const server = http.createServer((request, response) => {
   const parsedUrl = url.parse(request.url);
 
-  console.log("parsedUrl", parsedUrl);
-
   const query = parsedUrl.query;
-
-  console.log("query: ", query);
 
   switch (request.url) {
 
@@ -19,8 +15,14 @@ const server = http.createServer((request, response) => {
       const consulta = querystring.parse(query);
       //console.log(consulta.name, consulta.id, consulta.title, consulta.showTimes);
       response.statusCode = 200;
-      response.write("<div>");
-      response.write(`<h1>HOLA ${movies.getMovieById(consulta.id)}</h1`);
+      const moviesByTitle = movies.getMoviesByTitle(consulta.title);
+      const moviesById = movies.getMovieById(JSON.stringify(consulta.id)); 
+      const moviesByShowtime =  movies.getMovieByShowtimes(consulta.showTime);
+      response.write("<div style='margin: 50px; background: red; border-radius: 20px; color: fff'>");
+      response.write(`<h1>Ejercicio de ${consulta.name}</h1>`);
+      // response.write(`<p>La película cuyo id es ${consulta.id} es moviesById}</p>`);
+      // response.write(`<p>La película que empieza a las ${consulta.showTime} es moviesByShowtime}</p>`);
+      // response.write(`<p>La película cuyo título contiene ${consulta.title} es moviesByTitle}</p>`);
       response.write("</div>");
       response.end();
       break;
