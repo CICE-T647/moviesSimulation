@@ -6,9 +6,10 @@ const getMovieFromMoviesDataById = (id, callback) => {
     const movieMatched = movies.find(movie => movie.id === id);
     if (!movieMatched) {
       callback(`No se ha encontrado ninguna película con la id ${id}`);
+    } else {
+      callback(null, movieMatched);
     }
-    callback(null, movieMatched);
-  });
+  }, 2000);
 };
 
 const getMovieById = id => {
@@ -27,9 +28,9 @@ const getMoviesFromMoviesDataByTitle = title => {
 
       if (!moviesMatched) {
         reject(`No se ha encontrado una película que comience por ${title}`);
+      } else {
+        resolve(moviesMatched);
       }
-
-      resolve(moviesMatched);
     }, 2000);
   });
 };
@@ -50,9 +51,9 @@ const getMoviesFromMoviesDataByShowtimes = showTime => {
 
       if (!moviesMatched) {
         reject(`No se ha encontrado una película que comience por ${title}`);
+      } else {
+        resolve(moviesMatched);
       }
-
-      resolve(moviesMatched);
     }, 2000);
   });
 };
@@ -63,7 +64,14 @@ const getMovieByShowtimes = async shotimes => {
 
     return moviesMatched;
   } catch (error) {
-    return error;
+    return "No existen peliculas en las horas indicadas";
   }
 };
-module.exports = { getMovieById, getMoviesByTitle, getMovieByShowtimes };
+module.exports = {
+  getMovieById,
+  getMoviesByTitle,
+  getMovieByShowtimes,
+  getMovieFromMoviesDataById,
+  getMoviesFromMoviesDataByShowtimes,
+  getMoviesFromMoviesDataByTitle
+};

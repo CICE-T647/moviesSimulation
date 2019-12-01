@@ -5,26 +5,86 @@ const querystring = require("querystring");
 
 const moviesMethods = require("./methods.js");
 
-//server
-const server = http.createServer((req, res) => {
-  const parsedUrl = url.parse(req.url);
+http
+  .createServer(function(req, res) {
+    const queryObject = url.parse(req.url, true).query;
+    const parsePathname = url.parse(req.url).pathname;
 
-  console.log("parsedUrl", parsedUrl);
+    const getMovieById = id => {
+      moviesMethods.getMovieFromMoviesDataById(id, (error, data) => {
+        if (error) {
+          res.writeHead(200, { "Content-type": "text/plain" });
+          res.write(error);
+        } else {
+          res.writeHead(200, { "Content-type": "application/json" });
+          res.write(JSON.stringify(data));
+        }
+      });
+    };
 
-  const query = parsedUrl.query;
+    const getMoviesByTittle = title => {
+      moviesMethods
+        .getMoviesFromMoviesDataByTitle(title)
+        .then(data => {
+          res.writeHead(200, { "Content-type": "application/json" });
+          res.write(JSON.stringify(data));
+        })
+        .catch(error => {
+          res.writeHead(200, { "Content-type": "text/plain" });
+          res.write(error);
+        });
+    };
 
-  console.log("query: ", query);
+    const getMovieByShowtimes = async shotimes => {
+      try {
+        const moviesMatched = await moviesMethods.getMoviesFromMoviesDataByShowtimes(
+          shotimes
+        );
+        res.writeHead(200, { "Content-type": "application/json" });
+        res.write(JSON.stringify(moviesMatched));
+      } catch (error) {
+        res.writeHead(200, { "Content-type": "text/plain" });
+        res.write(error);
+      }
+    };
 
-  switch (req.url) {
-    case "/":
-      res.end("Index");
-      break;
-    case "getMovieById":
-      res.end("getMovieById");
-      break;
-  }
-});
+    switch (parsePathname) {
+      case "/":
+        res.writeHead(200, { "Content-type": "text/plain" });
+        res.write("INDEX");
+        break;
+      case "/getMovieById":
+        if (queryObject.id) {
+          getMovieById(parseInt(queryObject.id, 10));
+        } else {
+          res.writeHead(200, { "Content-type": "text/plain" });
+          res.write("Debe indicar el parametro id");
+        }
+        break;
+      case "/getMoviesByTitle":
+        if (queryObject.title) {
+          getMoviesByTittle(queryObject.title);
+        } else {
+          res.writeHead(200, { "Content-type": "text/plain" });
+          res.write("Debe indicar el parametro title");
+        }
+        break;
+      case "/getMovieByShowtimes":
+        if (queryObject.showtimes) {
+          getMovieByShowtimes(queryObject.showtimes);
+        } else {
+          res.writeHead(200, { "Content-type": "text/plain" });
+          res.write("Debe indicar el parametro showtimes");
+        }
+        break;
 
-server.listen(3000, () => {
-  console.log("Running on port 3000");
-});
+      default:
+        res.writeHead(404, { "Content-type": "text/plain" });
+        res.write("No existe la ruta");
+    }
+    setTimeout(() => {
+      res.end();
+    }, 3000);
+    //res.end();
+  })
+  .listen(3000, () => console.log("Running on port 3000"));
