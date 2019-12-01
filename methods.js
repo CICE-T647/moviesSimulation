@@ -1,138 +1,66 @@
-const movies = require("./moviesData")
+const movies = require("./moviesData");
 
+// getMovies
 
+const getMovies = callback => {
+    console.log("Getting movies");
+    setTimeout(() => {
+        if (!movies.movies) callback(`Not exist a movies`);
+        else callback(null, movies.movies);
+    }, 3000);
+};
 
-//----------------------//
-//  1.  getMovieById    //
-//----------------------//
+// getMovieById
 
-const getMovieFromMovieDataById = (id, callback) => {
-// función encargada de la petición a la "base de datos".
-// esta función será exportada desde este archivo. 
+const getMovieById = (id, callback) => {
+    console.log("Initializating Movie search by ID", id);
+    setTimeout(() => {
+        const movie = movies.movies.find(movie => {
+            return movie.id === id;
+        });
+        if (!movie) callback(`Opss - ID movie ${id} not found`);
+        else callback(null, movie);
+    }, 3000);
+};
 
-    setTimeout(()=> {
-        const movie = movies.find( (movie) => movie.id === id)
+// getMovieByTitle
 
-        if (!movie) callback(`No se ha encontrado ninguna película con la id ${id}`)
-        else callback(null, movie)
+const getMovieByTitle = async title => {
+    console.log("Initializating Movie search by Title", title);
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            let matches = [];
+            for (let i = 0; i < movies.movies.length; i++) {
+                if (movies.movies[i].title.startsWith(title)) {
+                    matches.push(movies.movies[i]);
+                }
+            }
+            if (matches.length > 0) resolve(matches);
+            else reject(`Opss - Movies with Pattern "${title}" not found`);
+        }, 3000);
+    });
+};
 
-    },2000)
-}
+// getMovieByShowtimes
+const getMovieByShowtimes = async time => {
+    console.log("Initializating Movie search by Time", time);
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            let matches = [];
+            for (let i = 0; i < movies.movies.length; i++) {
+                if (movies.movies[i].showtimes.includes(time)) {
+                    matches.push(movies.movies[i]);
+                }
+            }
+            if (matches.length > 0) resolve(matches);
+            else reject(`Opss - Movies showed on ${time} not found`);
+        }, 3000);
+    });
+};
 
-
-
-const getMovieById = ( id ) => {
-// funcion principal (handler) encargada gestionar las peticiones y devolvewr las respuestas finales
-// Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
-
-   getMovieFromMovieDataById( id, (error, data) => {
-       if(error) {
-           console.log(error)
-           return error
-        }
-        console.log(data)
-        return data
-   })
-
-}
-
-// Llamada de la función principal (handler):
-getMovieById( 8 )
-
-// llamada que devuelve error: 
-// getMovieById( 30 )
-
-
-
-//--------------------------//
-//   2.  getMoviesByTitle   //
-//--------------------------//
-
-const getMoviesFromMoviesDataByTitle = (title) => {
-// función encargada de la petición a la "base de datos".
-// esta función será exportada desde este archivo. 
-
-    return new Promise( ( resolve, reject ) => {
-        setTimeout(()=> {
-
-            const moviesMatched = movies.filter( ( movie )=> movie.title.startsWith(title) )
-
-            if (!moviesMatched || moviesMatched.length ===0) reject("No hay coincidencias")
-            
-            resolve(moviesMatched)
-
-        },2000)
-    })
-}
-
-// Llamada de la función principal (handler)
-const getMoviesByTitle = (title) =>{
-
-    // funcion principal (handler) encargada gestionar las peticiones y devolvewr las respuestas finales
-    // Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
-    
-    getMoviesFromMoviesDataByTitle(title)
-    .then(moviesMatched=>{
-        console.log(moviesMatched)
-        return moviesMatched
-    } )
-    .catch(error=>{
-        console.log(error)
-        return error
-    })
-}
-
-// Llamada de la función principal (handler):
-getMoviesByTitle("The S")
-// Llamada que devuelve error:
-// getMoviesByTitle("X")
-
-
-
-
-//-----------------------------//
-//   3.  getMovieByShowtimes   //
-//-----------------------------//
-
-const getMoviesFromMoviesDataByShowtime = (showTime) => {
-// función encargada de la petición a la "base de datos".
-// esta función será exportada desde este archivo. 
-
-    return new Promise( ( resolve, reject ) => {
-        setTimeout(()=> {
-
-            const moviesMatched = movies.filter( ( movie )=> movie.showtimes.includes(showTime) )
-
-            if (!moviesMatched || moviesMatched.length ===0) reject("No hay coincidencias")
-            
-            resolve(moviesMatched)
-
-        },2000)
-    })
-
-}
-
-const getMoviesByShowtime = async (swhotime) => {
-// funcion principal (handler) encargada gestionar las peticiones y devolvewr las respuestas finales
-// Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
-
-    try{
-
-        const moviesMatched = await getMoviesFromMoviesDataByShowtime(swhotime)
-        
-        console.log(moviesMatched)
-        return moviesMatched
-
-    } catch(error) {
-
-        console.log(error)
-        return  error
-
-    }
-}
-
-
-// Llamada de la función principal (handler)
-getMoviesByShowtime("13:50")
-// Llamada que devuelve error:
-// getMoviesByShowtime("20:33")
+module.exports = {
+    getMovieById,
+    getMovies,
+    getMovieByTitle,
+    getMovieByShowtimes
+};
