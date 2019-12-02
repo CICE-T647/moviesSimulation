@@ -34,7 +34,14 @@ http
           res.write(error);
         });
     };
-
+    /**
+     * Si queremos ejecutar la promesa (async-await) de manera directa sin
+     * meterla en una constante, sin directamente con la estructura
+     * try-catch debemos colocar el async en la funcion contenedora inmediatamente
+     * superior en este caso la funcion del server, le decimos que todo el callback es asincrono
+     * esto no afecta al resto de funciones y podemos colocar dentro todos los awaits necesarios
+     *  en caso contrario nos encontramos con error del tipo ENVIO DE DOBLE HEADER
+     */
     const getMovieByShowtimes = async shotimes => {
       try {
         const moviesMatched = await moviesMethods.getMoviesFromMoviesDataByShowtimes(
