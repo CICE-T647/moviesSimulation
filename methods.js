@@ -1,7 +1,5 @@
 const movies = require("./moviesData")
 
-
-
 //----------------------//
 //  1.  getMovieById    //
 //----------------------//
@@ -13,35 +11,15 @@ const getMovieFromMovieDataById = (id, callback) => {
     setTimeout(()=> {
         const movie = movies.find( (movie) => movie.id === id)
 
-        if (!movie) callback(`No se ha encontrado ninguna película con la id ${id}`)
+        if (!movie) callback({
+            status: 404, 
+            message: `No se ha encontrado ninguna película con la id ${id}`
+        })
+
         else callback(null, movie)
 
     },2000)
 }
-
-
-
-const getMovieById = ( id ) => {
-// funcion principal (handler) encargada gestionar las peticiones y devolvewr las respuestas finales
-// Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
-
-   getMovieFromMovieDataById( id, (error, data) => {
-       if(error) {
-           console.log(error)
-           return error
-        }
-        console.log(data)
-        return data
-   })
-
-}
-
-// Llamada de la función principal (handler):
-getMovieById( 8 )
-
-// llamada que devuelve error: 
-// getMovieById( 30 )
-
 
 
 //--------------------------//
@@ -57,38 +35,17 @@ const getMoviesFromMoviesDataByTitle = (title) => {
 
             const moviesMatched = movies.filter( ( movie )=> movie.title.startsWith(title) )
 
-            if (!moviesMatched || moviesMatched.length ===0) reject("No hay coincidencias")
-            
+            if (!moviesMatched || !moviesMatched.length) 
+                reject({ 
+                    status: 404, 
+                    message: `No se han encontrado coincidencias con el título "${title}"`
+                })
+
             resolve(moviesMatched)
 
         },2000)
     })
 }
-
-// Llamada de la función principal (handler)
-const getMoviesByTitle = (title) =>{
-
-    // funcion principal (handler) encargada gestionar las peticiones y devolvewr las respuestas finales
-    // Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
-    
-    getMoviesFromMoviesDataByTitle(title)
-    .then(moviesMatched=>{
-        console.log(moviesMatched)
-        return moviesMatched
-    } )
-    .catch(error=>{
-        console.log(error)
-        return error
-    })
-}
-
-// Llamada de la función principal (handler):
-getMoviesByTitle("The S")
-// Llamada que devuelve error:
-// getMoviesByTitle("X")
-
-
-
 
 //-----------------------------//
 //   3.  getMovieByShowtimes   //
@@ -100,10 +57,10 @@ const getMoviesFromMoviesDataByShowtime = (showTime) => {
 
     return new Promise( ( resolve, reject ) => {
         setTimeout(()=> {
-
+            console.log(showTime)
             const moviesMatched = movies.filter( ( movie )=> movie.showtimes.includes(showTime) )
-
-            if (!moviesMatched || moviesMatched.length ===0) reject("No hay coincidencias")
+            if (!moviesMatched || !moviesMatched.length) 
+                reject({ status: 404, message: `No se han encontrado coincidencias con la hora de inicio "${showTime}"`})
             
             resolve(moviesMatched)
 
@@ -112,27 +69,5 @@ const getMoviesFromMoviesDataByShowtime = (showTime) => {
 
 }
 
-const getMoviesByShowtime = async (swhotime) => {
-// funcion principal (handler) encargada gestionar las peticiones y devolvewr las respuestas finales
-// Por tanto, tendréis que crearla y llamarla desde la ruta correspondiente del servidor y devolver la respuesta en el callback
 
-    try{
-
-        const moviesMatched = await getMoviesFromMoviesDataByShowtime(swhotime)
-        
-        console.log(moviesMatched)
-        return moviesMatched
-
-    } catch(error) {
-
-        console.log(error)
-        return  error
-
-    }
-}
-
-
-// Llamada de la función principal (handler)
-getMoviesByShowtime("13:50")
-// Llamada que devuelve error:
-// getMoviesByShowtime("20:33")
+module.exports = { getMovieFromMovieDataById, getMoviesFromMoviesDataByTitle, getMoviesFromMoviesDataByShowtime }
